@@ -1,4 +1,4 @@
-package canvas.xplorer.com.doublebufferingdrawing.activities
+package canvas.xplorer.com.doublebufferingdrawing.activities.activities
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle

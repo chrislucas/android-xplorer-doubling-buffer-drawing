@@ -1,0 +1,9 @@
+// Links de estudo para verificar qual é a melhor abordagem para desenhar, usar uma surfaceView ou uma customView
+https://stackoverflow.com/questions/32442830/best-solution-surfaceview-vs-view-drawing
+
+https://www.sayonetech.com/blog/view-versus-surfaceview-android/#.W0-WqtVKiJB
+https://stackoverflow.com/questions/32442830/best-solution-surfaceview-vs-view-drawing
+https://medium.com/rosberryapps/make-your-custom-view-60fps-in-android-4587bbffa557
+https://google-developer-training.gitbooks.io/android-developer-advanced-course-concepts/unit-5-advanced-graphics-and-views/lesson-11-canvas/11-2-c-the-surfaceview-class/11-2-c-the-surfaceview-class.html
+https://nayaneshguptetechstuff.wordpress.com/2014/06/17/writing-a-custom-view-surfaceview-vs-view/
+http://www.dre.vanderbilt.edu/~schmidt/android/android-4.0/out/target/common/docs/doc-comment-check/guide/topics/graphics/index.html

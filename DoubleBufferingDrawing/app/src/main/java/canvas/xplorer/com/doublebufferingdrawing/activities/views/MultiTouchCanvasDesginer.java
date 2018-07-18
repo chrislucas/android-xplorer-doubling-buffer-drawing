@@ -6,15 +6,15 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 
-public class CanvasDrawer extends View {
-    public CanvasDrawer(Context context) {
+public class MultiTouchCanvasDesginer extends View {
+
+    public MultiTouchCanvasDesginer(Context context) {
         super(context);
     }
 
-    public CanvasDrawer(Context context, @Nullable AttributeSet attrs) {
+    public MultiTouchCanvasDesginer(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
-
 
     @Nullable
     @Override
@@ -25,10 +25,5 @@ public class CanvasDrawer extends View {
     @Override
     protected void onRestoreInstanceState(Parcelable state) {
         super.onRestoreInstanceState(state);
-    }
-
-    @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        super.onLayout(changed, left, top, right, bottom);
     }
 }
