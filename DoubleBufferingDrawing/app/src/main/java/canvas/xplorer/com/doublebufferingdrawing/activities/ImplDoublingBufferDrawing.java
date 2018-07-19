@@ -25,27 +25,27 @@ public class ImplDoublingBufferDrawing {
         this.mBitmapCache = Bitmap.createBitmap(mWidth, mHeight, Bitmap.Config.ARGB_8888);
     }
 
-    public Bitmap getmBitmapCache() {
+    public Bitmap getBitmapCache() {
         return mBitmapCache;
     }
 
-    public Canvas getmCanvasCache() {
+    public Canvas getCanvasCache() {
         return mCanvasCache;
     }
 
-    public Paint getmPaint() {
+    public Paint getPaint() {
         return mPaint;
     }
 
-    public int getmWidth() {
+    public int getWidth() {
         return mWidth;
     }
 
-    public int getmHeight() {
+    public int getHeight() {
         return mHeight;
     }
 
-    public RectF getmRectCanvas() {
+    public RectF getRectCanvas() {
         return mRectCanvas;
     }
 }
