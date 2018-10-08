@@ -7,13 +7,13 @@ import android.util.AttributeSet;
 import android.view.SurfaceView;
 import android.view.View;
 
-public class SurfaceViewMultiTouchSensorCanvasDesginer extends SurfaceView {
+public class SurfaceViewMultiTouchSensorCanvasDesigner extends SurfaceView {
 
-    public SurfaceViewMultiTouchSensorCanvasDesginer(Context context) {
+    public SurfaceViewMultiTouchSensorCanvasDesigner(Context context) {
         super(context);
     }
 
-    public SurfaceViewMultiTouchSensorCanvasDesginer(Context context, @Nullable AttributeSet attrs) {
+    public SurfaceViewMultiTouchSensorCanvasDesigner(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 

@@ -74,15 +74,7 @@ public class SurfaceViewSingleTouchSensorCanvasDesigner extends SurfaceView impl
     }
 
     @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        /*
-        Canvas canvas = holder.lockCanvas();
-        if (canvas != null) {
-            draw(canvas);
-            holder.unlockCanvasAndPost(canvas);
-        }
-        */
-    }
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) { }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {}
