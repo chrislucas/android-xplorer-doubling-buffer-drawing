@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<canvas.xplorer.com.doublebufferingdrawing.activities.views.SurfaceViewSingleTouchSensorCanvasDesigner
-    android:id="@+id/single_touch_surface_view"
+<canvas.xplorer.com.doublebufferingdrawing.activities.views.SurfaceViewMultiTouchSensorCanvasDesginer
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".activities.fragments.FragmentMultiTouchCanvasDesigner"
     android:orientation="vertical"
-    tools:context=".activities.fragments.FragmentSingleTouchCanvasDesigner"
     />

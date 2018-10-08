@@ -18,34 +18,36 @@ public class ImplDoublingBufferDrawing {
     private final RectF mRectCanvas;
 
     public ImplDoublingBufferDrawing(Paint mPaint, int mWidth, int mHeight) {
-        this.mPaint = mPaint;
-        this.mWidth = mWidth;
-        this.mHeight = mHeight;
-        this.mRectCanvas = new RectF(0,0, mWidth, mHeight);
-        this.mBitmapCache = Bitmap.createBitmap(mWidth, mHeight, Bitmap.Config.ARGB_8888);
+        this.mPaint         = mPaint;
+        this.mWidth         = mWidth;
+        this.mHeight        = mHeight;
+        this.mRectCanvas    = new RectF(0,0, mWidth, mHeight);
+        this.mBitmapCache   = Bitmap.createBitmap(mWidth, mHeight, Bitmap.Config.ARGB_8888);
+        this.mCanvasCache   = new Canvas();
+        this.mCanvasCache.setBitmap(mBitmapCache);
     }
 
-    public Bitmap getmBitmapCache() {
+    public Bitmap getBitmapCache() {
         return mBitmapCache;
     }
 
-    public Canvas getmCanvasCache() {
+    public Canvas getCanvasCache() {
         return mCanvasCache;
     }
 
-    public Paint getmPaint() {
+    public Paint getPaint() {
         return mPaint;
     }
 
-    public int getmWidth() {
+    public int getWidth() {
         return mWidth;
     }
 
-    public int getmHeight() {
+    public int getHeight() {
         return mHeight;
     }
 
-    public RectF getmRectCanvas() {
+    public RectF getRectCanvas() {
         return mRectCanvas;
     }
 }
