@@ -28,8 +28,6 @@ public class ViewSingleTouchSensorCanvasDesigner extends View implements IDetect
 
     private GestureDetector gestureDetector;
 
-    private SurfaceHolder surfaceHolder;
-
     private Path mPath;
 
     private float lastX, lastY;
@@ -188,17 +186,15 @@ public class ViewSingleTouchSensorCanvasDesigner extends View implements IDetect
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
-        return false;
+        return true;
     }
 
     @Override
-    public void onLongPress(MotionEvent e) {
-
-    }
+    public void onLongPress(MotionEvent e) { }
 
     @Override
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        return false;
+        return true;
     }
 
     private static ArrayMap<Integer, String> EVENTS = new ArrayMap<>();
@@ -211,6 +207,14 @@ public class ViewSingleTouchSensorCanvasDesigner extends View implements IDetect
         EVENTS.put(MotionEvent.ACTION_HOVER_MOVE, "MotionEvent.ACTION_HOVER_MOVE");
     }
 
+    /**
+     * {@link GestureDetector.SimpleOnGestureListener#onFling(MotionEvent, MotionEvent, float, float)}
+     *
+     * Notifica um evento de movimento do dedo sobre a tela de forma rápida (Exemplo quando vamos passar uma ViewPager)
+     * Esse evento calcula a velocidade de execução do gesto sabendo a distance entre o Ponto inicial tocado S(x,y)
+     * e o ponto final E(x, y) ao longo dos eixos x e y por segundo
+     *
+     * */
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
         int actionMaskedEvent1 = e1.getActionMasked();

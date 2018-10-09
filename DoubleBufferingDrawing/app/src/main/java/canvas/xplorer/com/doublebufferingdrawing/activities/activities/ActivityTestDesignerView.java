@@ -17,6 +17,7 @@ public class ActivityTestDesignerView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_designer_view);
         // FragmentSingleTouchCanvasDesignerOnSurfaceView
+        // FragmentSingleTouchCanvasDesignerOnView
         BaseFragment baseFragment = FragmentSingleTouchCanvasDesignerOnView.newInstance();
         if (fm.findFragmentByTag(baseFragment.getTagFragment()) == null) {
             fm.beginTransaction()

@@ -241,11 +241,6 @@ public class SurfaceViewSingleTouchSensorCanvasDesigner
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
-        int action = e.getActionMasked();
-        switch (action) {
-            case MotionEvent.ACTION_UP:
-                break;
-        }
         return true;
     }
 
@@ -256,7 +251,6 @@ public class SurfaceViewSingleTouchSensorCanvasDesigner
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
         return true;
     }
-
 
     private static ArrayMap<Integer, String> EVENTS = new ArrayMap<>();
 
