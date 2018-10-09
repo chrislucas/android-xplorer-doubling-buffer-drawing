@@ -15,7 +15,7 @@ import canvas.xplorer.com.doublebufferingdrawing.activities.views.SurfaceViewSin
  *
  **/
 
-public class FragmentSingleTouchCanvasDesigner extends BaseFragment {
+public class FragmentSingleTouchCanvasDesignerOnSurfaceView extends BaseFragment {
 
 
     private SurfaceViewSingleTouchSensorCanvasDesigner surfaceView;
@@ -25,16 +25,16 @@ public class FragmentSingleTouchCanvasDesigner extends BaseFragment {
         this.tag = getClass().getSimpleName();
     }
 
-    public FragmentSingleTouchCanvasDesigner() {}
+    public FragmentSingleTouchCanvasDesignerOnSurfaceView() {}
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     * @return A new instance of fragment FragmentSingleTouchCanvasDesigner.
+     * @return A new instance of fragment FragmentSingleTouchCanvasDesignerOnSurfaceView.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragmentSingleTouchCanvasDesigner newInstance() {
-        return  new FragmentSingleTouchCanvasDesigner();
+    public static FragmentSingleTouchCanvasDesignerOnSurfaceView newInstance() {
+        return  new FragmentSingleTouchCanvasDesignerOnSurfaceView();
     }
 
     @Override

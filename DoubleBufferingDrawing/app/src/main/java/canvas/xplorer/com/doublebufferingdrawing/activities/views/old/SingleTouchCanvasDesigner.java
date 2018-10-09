@@ -1,4 +1,4 @@
-package canvas.xplorer.com.doublebufferingdrawing.activities.views;
+package canvas.xplorer.com.doublebufferingdrawing.activities.views.old;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -85,7 +85,7 @@ public class SingleTouchCanvasDesigner extends View
     }
 
     private void initializeDoublingBufferDrawer() {
-        implDoublingBufferDrawing = new ImplDoublingBufferDrawing(mPaint, mWidth, mHeight);
+        implDoublingBufferDrawing = new ImplDoublingBufferDrawing(mWidth, mHeight);
     }
     
 

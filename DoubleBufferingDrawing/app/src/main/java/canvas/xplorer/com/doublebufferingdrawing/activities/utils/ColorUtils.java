@@ -13,8 +13,8 @@ public class ColorUtils {
     public static int getRandomColorRGB255(int lowerBound, int upperBound) {
         lowerBound = lowerBound < 0 ? 0 : lowerBound;
         upperBound = upperBound < 0 ? 0 : upperBound;
-        lowerBound %= 255;
-        upperBound %= 255;
+        lowerBound = lowerBound > 255 ? lowerBound % 255 : lowerBound;
+        upperBound = upperBound > 255 ? upperBound % 255 : upperBound;
         // swap usando XOR operator
         if(upperBound < lowerBound) {
             upperBound ^= lowerBound;
@@ -24,6 +24,7 @@ public class ColorUtils {
         int r = random.nextInt(upperBound - lowerBound) + lowerBound;
         int g = random.nextInt(upperBound - lowerBound) + lowerBound;
         int b = random.nextInt(upperBound - lowerBound) + lowerBound;
-        return 0xff000000 + (r << 16) + (g << 8) + b;
+        System.out.printf("(%d, %d, %d)\n", r, g, b);
+        return 0xff000000 | ((r << 16) & 0x00FF0000) | ((g << 8) & 0x0000FF00) | (b & 0x000000FF);
     }
 }

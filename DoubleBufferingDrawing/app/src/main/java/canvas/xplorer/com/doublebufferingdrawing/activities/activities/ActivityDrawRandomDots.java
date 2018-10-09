@@ -6,21 +6,20 @@ import android.os.Bundle;
 
 import canvas.xplorer.com.doublebufferingdrawing.R;
 import canvas.xplorer.com.doublebufferingdrawing.activities.fragments.BaseFragment;
-import canvas.xplorer.com.doublebufferingdrawing.activities.fragments.FragmentSingleTouchCanvasDesignerOnSurfaceView;
-import canvas.xplorer.com.doublebufferingdrawing.activities.fragments.FragmentSingleTouchCanvasDesignerOnView;
+import canvas.xplorer.com.doublebufferingdrawing.activities.fragments.FragmentDrawRandomDotsSample;
 
-public class ActivityTestDesignerView extends AppCompatActivity {
+public class ActivityDrawRandomDots extends AppCompatActivity {
 
     private final FragmentManager fm = getSupportFragmentManager();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test_designer_view);
-        // FragmentSingleTouchCanvasDesignerOnSurfaceView
-        BaseFragment baseFragment = FragmentSingleTouchCanvasDesignerOnView.newInstance();
+        setContentView(R.layout.activity_draw_random_dots);
+        BaseFragment baseFragment = FragmentDrawRandomDotsSample.newInstance();
         if (fm.findFragmentByTag(baseFragment.getTagFragment()) == null) {
             fm.beginTransaction()
-                    .replace(R.id.view_replacement, baseFragment, baseFragment.getTagFragment())
+                    .replace(R.id.layout_replace, baseFragment, baseFragment.getTagFragment())
                     .addToBackStack(baseFragment.getTagFragment())
                     .commit();
         }
@@ -33,5 +32,10 @@ public class ActivityTestDesignerView extends AppCompatActivity {
             moveTaskToBack(true);
             finish();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

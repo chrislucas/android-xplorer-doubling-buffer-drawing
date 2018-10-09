@@ -5,7 +5,6 @@ import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
-import android.view.View;
 
 public class SurfaceViewMultiTouchSensorCanvasDesigner extends SurfaceView {
 

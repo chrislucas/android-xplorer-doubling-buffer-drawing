@@ -6,30 +6,26 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Parcelable;
-import android.support.annotation.Nullable;
 import android.util.ArrayMap;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
 
 import canvas.xplorer.com.doublebufferingdrawing.activities.ImplDoublingBufferDrawing;
-import canvas.xplorer.com.doublebufferingdrawing.activities.events.IDetectTap;
 import canvas.xplorer.com.doublebufferingdrawing.activities.events.DelegateGestureListenerTap;
+import canvas.xplorer.com.doublebufferingdrawing.activities.events.IDetectTap;
 import canvas.xplorer.com.doublebufferingdrawing.activities.utils.ColorUtils;
 
-public class SurfaceViewSingleTouchSensorCanvasDesigner
-        extends SurfaceView implements SurfaceHolder.Callback2, IDetectTap {
+public class ViewSingleTouchSensorCanvasDesigner extends View implements IDetectTap {
 
     private Paint mPaint;
-
     private int mWidth, mHeight;
 
     private ImplDoublingBufferDrawing implDoublingBufferDrawing;
+
     private GestureDetector gestureDetector;
 
     private SurfaceHolder surfaceHolder;
@@ -41,51 +37,36 @@ public class SurfaceViewSingleTouchSensorCanvasDesigner
     private final int BACKGROUND_COLOR_DEFAULT = getBackground() == null
             ? Color.WHITE : ((ColorDrawable) getBackground()).getColor();
 
-    public SurfaceViewSingleTouchSensorCanvasDesigner(Context context) {
+    public ViewSingleTouchSensorCanvasDesigner(Context context) {
         super(context);
         init();
     }
 
-    public SurfaceViewSingleTouchSensorCanvasDesigner(Context context, @Nullable AttributeSet attrs) {
+    public ViewSingleTouchSensorCanvasDesigner(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    @Override
-    public void surfaceRedrawNeeded(SurfaceHolder holder) { }
-
-    @Override
-    public void surfaceCreated(SurfaceHolder holder) {
-        if (mWidth > 0 && mHeight > 0)
-            implDoublingBufferDrawing = new ImplDoublingBufferDrawing(mWidth, mHeight);
+    public ViewSingleTouchSensorCanvasDesigner(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init();
     }
-
-    @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) { }
-
-    @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {}
 
     private void init() {
         preparePencilToDraw();
         configureGestureDetector();
     }
 
-    public void start() {
-        surfaceHolder = getHolder();
-        surfaceHolder.addCallback(this);
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        this.mWidth = MeasureSpec.getSize(widthMeasureSpec);
-        this.mHeight = MeasureSpec.getSize(heightMeasureSpec);
-    }
-
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
+    private void configureGestureDetector() {
+        mPath = new Path();
+        gestureDetector = new GestureDetector(getContext()
+                , new DelegateGestureListenerTap(this));
+        setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return gestureDetector.onTouchEvent(event);
+            }
+        });
     }
 
     private void preparePencilToDraw() {
@@ -115,69 +96,31 @@ public class SurfaceViewSingleTouchSensorCanvasDesigner
         mPaint.setStrokeCap(Paint.Cap.ROUND);
     }
 
-    private void drawPathOnTouch() {
-        if (implDoublingBufferDrawing != null) {
-            Canvas canvas = null;
-            try {
-                canvas = surfaceHolder.lockCanvas();
-                synchronized (surfaceHolder) {
-                    setPencilToDrawPathOnTouch();
-                    implDoublingBufferDrawing.getCanvasCache().drawPath(mPath, mPaint);
-                    draw(canvas);
-                }
-            }
-            finally {
-                if (canvas != null) {
-                    surfaceHolder.unlockCanvasAndPost(canvas);
-                }
-            }
-        }
-        else {
-            Log.e("EXCEPTION_DRAW_PATH", "NOT PREPARED TO DRAW");
-        }
-    }
-
-    private void configureGestureDetector() {
-        mPath = new Path();
-        gestureDetector = new GestureDetector(getContext()
-                , new DelegateGestureListenerTap(this));
-        setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return gestureDetector.onTouchEvent(event);
-            }
-        });
-    }
-
     private void clearCanvas() {
         if (implDoublingBufferDrawing != null) {
             Log.i("CLEAR_SURFACE_VIEW", "CLEAR");
-            Canvas canvas = null;
-            try {
-                canvas = surfaceHolder.lockCanvas();
-                synchronized (surfaceHolder) {
-                    mPaint.setStyle(Paint.Style.FILL);
-                    mPaint.setColor(BACKGROUND_COLOR_DEFAULT);
-                    implDoublingBufferDrawing
-                            .getCanvasCache()
-                            .drawRect(implDoublingBufferDrawing.getRectCanvas(), mPaint);
-                    draw(canvas);
-                }
-            }
-            finally {
-                if (canvas != null) {
-                    surfaceHolder.unlockCanvasAndPost(canvas);
-                    invalidate();
-                }
-            }
+            mPaint.setStyle(Paint.Style.FILL);
+            mPaint.setColor(BACKGROUND_COLOR_DEFAULT);
+            implDoublingBufferDrawing
+                    .getCanvasCache()
+                    .drawRect(implDoublingBufferDrawing.getRectCanvas(), mPaint);
+            if (mPath != null)
+                mPath.reset();
         }
         else {
             Log.e("EXCEPTION_DRAW_PATH", "NOT PREPARED TO DRAW");
         }
     }
 
-    public GestureDetector getGestureDetector() {
-        return gestureDetector;
+    private void drawPathOnTouch() {
+        if (implDoublingBufferDrawing != null) {
+            setPencilToDrawPathOnTouch();
+            implDoublingBufferDrawing.getCanvasCache().drawPath(mPath, mPaint);
+            invalidate();
+        }
+        else {
+            Log.e("EXCEPTION_DRAW_PATH", "NOT PREPARED TO DRAW");
+        }
     }
 
     @Override
@@ -205,15 +148,35 @@ public class SurfaceViewSingleTouchSensorCanvasDesigner
                 break;
             case MotionEvent.ACTION_UP:
                 tag = "ACTION_UP";
-                preparePencilToDraw();
                 mPath.reset();
                 lastX = x;
                 lastY = y;
                 break;
         }
         Log.i(tag, String.format("(%f %f) (%f %f)", lastX, lastY, x, y));
-        invalidate();
         return true;
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        this.mWidth     = MeasureSpec.getSize(widthMeasureSpec);
+        this.mHeight    = MeasureSpec.getSize(heightMeasureSpec);
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        this.mWidth = w;
+        this.mHeight = h;
+        if (implDoublingBufferDrawing != null) {
+            this.implDoublingBufferDrawing.setWidth(w);
+            this.implDoublingBufferDrawing.setHeight(h);
+        }
+        else {
+            if (mWidth > 0 && mHeight > 0)
+                implDoublingBufferDrawing = new ImplDoublingBufferDrawing(mWidth, mHeight);
+        }
     }
 
     @Override
@@ -223,40 +186,20 @@ public class SurfaceViewSingleTouchSensorCanvasDesigner
                 , implDoublingBufferDrawing.getIdentity(), mPaint);
     }
 
-    @Nullable
-    @Override
-    protected Parcelable onSaveInstanceState() {
-        return super.onSaveInstanceState();
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Parcelable state) {
-        super.onRestoreInstanceState(state);
-    }
-
-    @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        super.onLayout(changed, left, top, right, bottom);
-    }
-
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
-        int action = e.getActionMasked();
-        switch (action) {
-            case MotionEvent.ACTION_UP:
-                break;
-        }
-        return true;
+        return false;
     }
 
     @Override
-    public void onLongPress(MotionEvent e) {}
+    public void onLongPress(MotionEvent e) {
+
+    }
 
     @Override
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        return true;
+        return false;
     }
-
 
     private static ArrayMap<Integer, String> EVENTS = new ArrayMap<>();
 
@@ -284,30 +227,32 @@ public class SurfaceViewSingleTouchSensorCanvasDesigner
     }
 
     @Override
-    public void onShowPress(MotionEvent e) {
-        int action = e.getActionMasked();
-        switch (action) {
-            case MotionEvent.ACTION_UP:
-                break;
-        }
-    }
+    public void onShowPress(MotionEvent e) { }
 
     @Override
     public boolean onDown(MotionEvent e) {
         return false;
     }
 
+    /**
+     * Nos notifica quando o evento double tap ocorre
+     * @param e The down motion event of the first tap of the double-tap.
+     * */
     @Override
-    public boolean onDoubleTap(final MotionEvent e) {
+    public boolean onDoubleTap(MotionEvent e) {
         return true;
     }
 
+    /**
+     * Nos notifica quando um evento dentro do double tap ocorre
+     * UP, DOWN, MOVE
+     * */
     @Override
     public boolean onDoubleTapEvent(MotionEvent e) {
-        int action = e.getActionMasked();
-        switch (action) {
+        switch (e.getActionMasked()) {
             case MotionEvent.ACTION_UP:
                 clearCanvas();
+                invalidate();
                 break;
         }
         return true;
@@ -315,21 +260,11 @@ public class SurfaceViewSingleTouchSensorCanvasDesigner
 
     @Override
     public boolean onSingleTapConfirmed(MotionEvent e) {
-        int action = e.getActionMasked();
-        switch (action) {
-            case MotionEvent.ACTION_UP:
-                break;
-        }
         return true;
     }
 
     @Override
     public boolean onContextClick(MotionEvent e) {
-        int action = e.getActionMasked();
-        switch (action) {
-            case MotionEvent.ACTION_UP:
-                break;
-        }
         return true;
     }
 }
