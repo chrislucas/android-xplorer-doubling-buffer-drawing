@@ -11,7 +11,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.view.SurfaceHolder;
 import android.view.View;
 
 import canvas.xplorer.com.doublebufferingdrawing.activities.ImplDoublingBufferDrawing;
@@ -112,9 +111,8 @@ public class ViewSingleTouchSensorCanvasDesigner extends View implements IDetect
 
     private void drawPathOnTouch() {
         if (implDoublingBufferDrawing != null) {
-            setPencilToDrawPathOnTouch();
+            mPaint.setColor(ColorUtils.getRandomColorRGB255(100, 180));
             implDoublingBufferDrawing.getCanvasCache().drawPath(mPath, mPaint);
-            invalidate();
         }
         else {
             Log.e("EXCEPTION_DRAW_PATH", "NOT PREPARED TO DRAW");
@@ -149,17 +147,17 @@ public class ViewSingleTouchSensorCanvasDesigner extends View implements IDetect
                 mPath.reset();
                 lastX = x;
                 lastY = y;
+                setPencilToDrawPathOnTouch();
                 break;
         }
         Log.i(tag, String.format("(%f %f) (%f %f)", lastX, lastY, x, y));
+        invalidate();
         return true;
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        this.mWidth     = MeasureSpec.getSize(widthMeasureSpec);
-        this.mHeight    = MeasureSpec.getSize(heightMeasureSpec);
     }
 
     @Override

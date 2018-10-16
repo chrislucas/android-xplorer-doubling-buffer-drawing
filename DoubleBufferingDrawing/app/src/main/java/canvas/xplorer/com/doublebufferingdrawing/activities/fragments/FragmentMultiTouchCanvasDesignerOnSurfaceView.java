@@ -12,10 +12,10 @@ import canvas.xplorer.com.doublebufferingdrawing.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link FragmentMultiTouchCanvasDesigner#newInstance} factory method to
+ * Use the {@link FragmentMultiTouchCanvasDesignerOnSurfaceView#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentMultiTouchCanvasDesigner extends BaseFragment {
+public class FragmentMultiTouchCanvasDesignerOnSurfaceView extends BaseFragment {
 
 
     @Override
@@ -23,16 +23,16 @@ public class FragmentMultiTouchCanvasDesigner extends BaseFragment {
         this.tag = getClass().getSimpleName();
     }
 
-    public FragmentMultiTouchCanvasDesigner() {}
+    public FragmentMultiTouchCanvasDesignerOnSurfaceView() {}
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     * @return A new instance of fragment FragmentMultiTouchCanvasDesigner.
+     * @return A new instance of fragment FragmentMultiTouchCanvasDesignerOnSurfaceView.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragmentMultiTouchCanvasDesigner newInstance() {
-        return new FragmentMultiTouchCanvasDesigner();
+    public static FragmentMultiTouchCanvasDesignerOnSurfaceView newInstance() {
+        return new FragmentMultiTouchCanvasDesignerOnSurfaceView();
     }
 
     @Override
