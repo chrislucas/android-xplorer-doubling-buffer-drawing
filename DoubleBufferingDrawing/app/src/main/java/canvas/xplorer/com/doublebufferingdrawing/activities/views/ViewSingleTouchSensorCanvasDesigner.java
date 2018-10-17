@@ -152,7 +152,7 @@ public class ViewSingleTouchSensorCanvasDesigner extends View implements IDetect
                 setPencilToDrawPathOnTouch();
                 break;
         }
-        Log.i(tag, String.format("(%f %f) (%f %f)", lastX, lastY, x, y));
+        //Log.i(tag, String.format("(%f %f) (%f %f)", lastX, lastY, x, y));
         invalidate();
         return true;
     }
@@ -177,10 +177,31 @@ public class ViewSingleTouchSensorCanvasDesigner extends View implements IDetect
         }
     }
 
+
+    @Override
+    protected void dispatchDraw(Canvas canvas) {
+        Log.i("DISPATCH_DRAW", "DISPATCH_DRAW");
+        super.dispatchDraw(canvas);
+    }
+
+    @Override
+    public void draw(Canvas canvas) {
+        Log.i("DRAW", "DRAW");
+        super.draw(canvas);
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawBitmap(implDoublingBufferDrawing.getBitmapCache(), implDoublingBufferDrawing.getIdentity(), mPaint);
+        Log.i("ON_DRAW", "ON_DRAW");
+        canvas.drawBitmap(implDoublingBufferDrawing.getBitmapCache()
+                , implDoublingBufferDrawing.getIdentity(), mPaint);
+    }
+
+    @Override
+    public void invalidate() {
+        Log.i("INVALIDATE", "INVALIDATE");
+        super.invalidate();
     }
 
     @Override
@@ -224,6 +245,7 @@ public class ViewSingleTouchSensorCanvasDesigner extends View implements IDetect
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
         int actionMaskedEvent1 = e1.getActionMasked();
         int actionMaskedEvent2 = e2.getActionMasked();
+        /*
         Log.i("ON_FLING"
                 , String.format("Event 1: %s Event 2: %s.\nVelocity X/Y: %f/%f"
                         , EVENTS.get(actionMaskedEvent1)
@@ -232,6 +254,7 @@ public class ViewSingleTouchSensorCanvasDesigner extends View implements IDetect
                         , velocityY
                 )
         );
+        */
         /**
          * se o usuario fizer um movimento de 'arrastar' rapido na tela e levantar o dedo (Movimento
          * parecido com Swipe), vamos redefinir a caneta de desenho
@@ -242,7 +265,6 @@ public class ViewSingleTouchSensorCanvasDesigner extends View implements IDetect
 
     @Override
     public void onShowPress(MotionEvent e) { }
-
 
     /**
      * Nos notifica quando o evento double tap ocorre

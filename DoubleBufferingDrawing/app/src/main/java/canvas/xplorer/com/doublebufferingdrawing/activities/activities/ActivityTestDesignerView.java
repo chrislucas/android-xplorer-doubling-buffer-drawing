@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import canvas.xplorer.com.doublebufferingdrawing.R;
 import canvas.xplorer.com.doublebufferingdrawing.activities.fragments.BaseFragment;
+import canvas.xplorer.com.doublebufferingdrawing.activities.fragments.FragmentSingleTouchCanvasDesignerOnSurfaceView;
 import canvas.xplorer.com.doublebufferingdrawing.activities.fragments.FragmentSingleTouchCanvasDesignerOnView;
 
 public class ActivityTestDesignerView extends AppCompatActivity {
@@ -15,7 +16,7 @@ public class ActivityTestDesignerView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_designer_view);
-        BaseFragment baseFragment = FragmentSingleTouchCanvasDesignerOnView.newInstance();
+        BaseFragment baseFragment = FragmentSingleTouchCanvasDesignerOnSurfaceView.newInstance(); // FragmentSingleTouchCanvasDesignerOnView.newInstance();
         if (fm.findFragmentByTag(baseFragment.getTagFragment()) == null) {
             fm.beginTransaction()
                     .replace(R.id.view_replacement, baseFragment, baseFragment.getTagFragment())

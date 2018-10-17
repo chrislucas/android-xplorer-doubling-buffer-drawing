@@ -8,6 +8,7 @@ import android.graphics.Path;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.util.ArrayMap;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 
+import canvas.xplorer.com.doublebufferingdrawing.R;
 import canvas.xplorer.com.doublebufferingdrawing.activities.ImplDoublingBufferDrawing;
 import canvas.xplorer.com.doublebufferingdrawing.activities.events.IDetectTap;
 import canvas.xplorer.com.doublebufferingdrawing.activities.events.DelegateGestureListenerTap;
@@ -39,7 +41,7 @@ public class SurfaceViewSingleTouchSensorCanvasDesigner
     private float lastX, lastY;
 
     private final int BACKGROUND_COLOR_DEFAULT = getBackground() == null
-            ? Color.WHITE : ((ColorDrawable) getBackground()).getColor();
+            ? ContextCompat.getColor(getContext(), R.color.light_green): ((ColorDrawable) getBackground()).getColor();
 
     public SurfaceViewSingleTouchSensorCanvasDesigner(Context context) {
         super(context);
@@ -76,6 +78,11 @@ public class SurfaceViewSingleTouchSensorCanvasDesigner
         surfaceHolder.addCallback(this);
     }
 
+    public void stop() {
+        if (surfaceHolder != null)
+            surfaceHolder.removeCallback(this);
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -92,6 +99,7 @@ public class SurfaceViewSingleTouchSensorCanvasDesigner
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.DITHER_FLAG);
         mPaint.setAntiAlias(true);
         mPaint.setDither(true);
+        setPencilToDrawPathOnTouch();
     }
 
     /**
@@ -205,13 +213,13 @@ public class SurfaceViewSingleTouchSensorCanvasDesigner
                 break;
             case MotionEvent.ACTION_UP:
                 tag = "ACTION_UP";
-                preparePencilToDraw();
+                setPencilToDrawPathOnTouch();
                 mPath.reset();
                 lastX = x;
                 lastY = y;
                 break;
         }
-        Log.i(tag, String.format("(%f %f) (%f %f)", lastX, lastY, x, y));
+        //Log.i(tag, String.format("(%f %f) (%f %f)", lastX, lastY, x, y));
         invalidate();
         return true;
     }
@@ -249,7 +257,12 @@ public class SurfaceViewSingleTouchSensorCanvasDesigner
 
     @Override
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        return true;
+        return false;
+    }
+
+    @Override
+    public boolean onDown(MotionEvent e) {
+        return false;
     }
 
     private static ArrayMap<Integer, String> EVENTS = new ArrayMap<>();
@@ -266,6 +279,7 @@ public class SurfaceViewSingleTouchSensorCanvasDesigner
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
         int actionMaskedEvent1 = e1.getActionMasked();
         int actionMaskedEvent2 = e2.getActionMasked();
+        /*
         Log.i("ON_FLING"
                 , String.format("Event 1: %s Event 2: %s.\nVelocity X/Y: %f/%f"
                         , EVENTS.get(actionMaskedEvent1)
@@ -274,6 +288,8 @@ public class SurfaceViewSingleTouchSensorCanvasDesigner
                         , velocityY
                 )
         );
+        */
+        setPencilToDrawPathOnTouch();
         return true;
     }
 
@@ -286,10 +302,7 @@ public class SurfaceViewSingleTouchSensorCanvasDesigner
         }
     }
 
-    @Override
-    public boolean onDown(MotionEvent e) {
-        return false;
-    }
+
 
     @Override
     public boolean onDoubleTap(final MotionEvent e) {

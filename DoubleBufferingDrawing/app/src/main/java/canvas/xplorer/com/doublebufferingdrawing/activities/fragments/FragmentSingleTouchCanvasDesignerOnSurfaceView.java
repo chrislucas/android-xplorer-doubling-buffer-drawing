@@ -58,6 +58,12 @@ public class FragmentSingleTouchCanvasDesignerOnSurfaceView extends BaseFragment
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        surfaceView.stop();
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
     }
