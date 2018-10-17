@@ -13,6 +13,8 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.Locale;
+
 import canvas.xplorer.com.doublebufferingdrawing.activities.ImplDoublingBufferDrawing;
 import canvas.xplorer.com.doublebufferingdrawing.activities.events.DelegateGestureListenerTap;
 import canvas.xplorer.com.doublebufferingdrawing.activities.events.IDetectTap;
@@ -50,14 +52,13 @@ public class ViewSingleTouchSensorCanvasDesigner extends View implements IDetect
     }
 
     private void init() {
-        preparePencilToDraw();
+        initPencil();
         configureGestureDetector();
     }
 
     private void configureGestureDetector() {
         mPath = new Path();
-        gestureDetector = new GestureDetector(getContext()
-                , new DelegateGestureListenerTap(this));
+        gestureDetector = new GestureDetector(getContext(), new DelegateGestureListenerTap(this));
         setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -66,10 +67,11 @@ public class ViewSingleTouchSensorCanvasDesigner extends View implements IDetect
         });
     }
 
-    private void preparePencilToDraw() {
+    private void initPencil() {
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.DITHER_FLAG);
         mPaint.setAntiAlias(true);
         mPaint.setDither(true);
+        setPencilToDrawPathOnTouch();
     }
 
     /**
@@ -111,7 +113,7 @@ public class ViewSingleTouchSensorCanvasDesigner extends View implements IDetect
 
     private void drawPathOnTouch() {
         if (implDoublingBufferDrawing != null) {
-            mPaint.setColor(ColorUtils.getRandomColorRGB255(100, 180));
+            //mPaint.setColor(ColorUtils.getRandomColorRGB255(100, 180));
             implDoublingBufferDrawing.getCanvasCache().drawPath(mPath, mPaint);
         }
         else {
@@ -124,7 +126,7 @@ public class ViewSingleTouchSensorCanvasDesigner extends View implements IDetect
         int action = event.getActionMasked();
         float x = event.getX();
         float y = event.getY();
-        String tag = "UNDEFINED";
+        String tag = String.format(Locale.getDefault(), "UNDEFINED Action: %d", action);
         switch (action) {
             case MotionEvent.ACTION_DOWN:
                 lastX = x;
@@ -171,15 +173,14 @@ public class ViewSingleTouchSensorCanvasDesigner extends View implements IDetect
         }
         else {
             if (mWidth > 0 && mHeight > 0)
-                implDoublingBufferDrawing = new ImplDoublingBufferDrawing(mWidth, mHeight);
+                implDoublingBufferDrawing = new ImplDoublingBufferDrawing(w, h);
         }
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawBitmap(implDoublingBufferDrawing.getBitmapCache()
-                , implDoublingBufferDrawing.getIdentity(), mPaint);
+        canvas.drawBitmap(implDoublingBufferDrawing.getBitmapCache(), implDoublingBufferDrawing.getIdentity(), mPaint);
     }
 
     @Override
@@ -192,8 +193,14 @@ public class ViewSingleTouchSensorCanvasDesigner extends View implements IDetect
 
     @Override
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        return true;
+        return false;
     }
+
+    @Override
+    public boolean onDown(MotionEvent e) {
+        return false;
+    }
+
 
     private static ArrayMap<Integer, String> EVENTS = new ArrayMap<>();
 
@@ -225,16 +232,17 @@ public class ViewSingleTouchSensorCanvasDesigner extends View implements IDetect
                         , velocityY
                 )
         );
+        /**
+         * se o usuario fizer um movimento de 'arrastar' rapido na tela e levantar o dedo (Movimento
+         * parecido com Swipe), vamos redefinir a caneta de desenho
+         * */
+        setPencilToDrawPathOnTouch();
         return true;
     }
 
     @Override
     public void onShowPress(MotionEvent e) { }
 
-    @Override
-    public boolean onDown(MotionEvent e) {
-        return false;
-    }
 
     /**
      * Nos notifica quando o evento double tap ocorre
@@ -255,6 +263,7 @@ public class ViewSingleTouchSensorCanvasDesigner extends View implements IDetect
             case MotionEvent.ACTION_UP:
                 clearCanvas();
                 invalidate();
+                setPencilToDrawPathOnTouch();
                 break;
         }
         return true;
