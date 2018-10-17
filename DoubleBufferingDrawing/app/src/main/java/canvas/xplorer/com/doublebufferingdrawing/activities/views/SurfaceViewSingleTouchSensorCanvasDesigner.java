@@ -2,7 +2,6 @@ package canvas.xplorer.com.doublebufferingdrawing.activities.views;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.drawable.ColorDrawable;
@@ -107,7 +106,7 @@ public class SurfaceViewSingleTouchSensorCanvasDesigner
      * */
     private void setPencilToDrawPathOnTouch() {
         mPaint.setStyle(Paint.Style.STROKE);
-        mPaint.setColor(ColorUtils.getRandomColorRGB255(100, 200));
+        mPaint.setColor(ColorUtils.getRandomColorRGB255(0, 255));
         mPaint.setStrokeWidth(15.0f);
         /**
          * Paint.Join enum que indica como segmentos de linhas sao juntados
@@ -129,7 +128,6 @@ public class SurfaceViewSingleTouchSensorCanvasDesigner
             try {
                 canvas = surfaceHolder.lockCanvas();
                 synchronized (surfaceHolder) {
-                    setPencilToDrawPathOnTouch();
                     implDoublingBufferDrawing.getCanvasCache().drawPath(mPath, mPaint);
                     draw(canvas);
                 }
@@ -170,6 +168,7 @@ public class SurfaceViewSingleTouchSensorCanvasDesigner
                             .getCanvasCache()
                             .drawRect(implDoublingBufferDrawing.getRectCanvas(), mPaint);
                     draw(canvas);
+                    setPencilToDrawPathOnTouch();
                 }
             }
             finally {
